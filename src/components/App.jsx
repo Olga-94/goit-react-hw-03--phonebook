@@ -11,6 +11,21 @@ export class App extends Component  {
     filter: '',
   };
 
+  componentDidMount() {
+    const contacts = JSON.parse(localStorage.getItem("contacts"));
+  
+      if (contacts) {
+        this.setState({ contacts });
+      }
+    }
+  
+  componentDidUpdate(_, state) {
+    const { contacts } = this.state;
+      if (state.contacts !== contacts) {
+        localStorage.setItem("contacts", JSON.stringify(contacts));
+      }
+  }
+  
   addContact = contact => {
     if (
       this.state.contacts.find(
@@ -43,21 +58,6 @@ export class App extends Component  {
       contacts: state.contacts.filter(contact => contact.id !== contactId),
     }));
   };
-
-  componentDidMount() {
-    const contacts = JSON.parse(localStorage.getItem("contacts"));
-  
-      if (contacts) {
-        this.setState({ contacts });
-      }
-    }
-  
-  componentDidUpdate(_, state) {
-    const { contacts } = this.state;
-      if (state.contacts !== contacts) {
-        localStorage.setItem("contacts", JSON.stringify(contacts));
-      }
-  }
 
   render() {
     const visibleContacts = this.getVisibleContact();
